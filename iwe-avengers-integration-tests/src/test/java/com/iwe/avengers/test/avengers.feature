@@ -16,3 +16,4 @@ Given path 'avengers'
 And request {name: 'Captain America', secretIdentity: 'Steve Rogers'}
 When method post
 Then status 201
+And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
