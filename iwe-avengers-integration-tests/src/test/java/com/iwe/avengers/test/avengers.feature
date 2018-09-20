@@ -10,7 +10,7 @@ When method get
 Then status 200
 And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
 
-Scenario: Create a new avengers
+Scenario: Create a new avenger
 
 Given path 'avengers'
 And request {name: 'Captain America', secretIdentity: 'Steve Rogers'}
