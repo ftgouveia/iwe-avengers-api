@@ -9,7 +9,7 @@ Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
 When method get
 Then status 200
 
-Scenario: Create a new avenger
+Scenario: Create a new avengers
 
 Given path 'avengers'
 And request {name: 'Captain America', secretIdentity: 'Steve Rogers'}
