@@ -17,3 +17,31 @@ And request {name: 'Captain America', secretIdentity: 'Steve Rogers'}
 When method post
 Then status 201
 And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
+
+Scenario: Create a new avenger with the required data
+
+Given path 'avengers'
+And request {name: 'Captain America'}
+When method post
+Then status 400
+
+Scenario: Delete avenger by id
+
+Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
+When method delete
+Then status 204
+
+Scenario: update avenger by id
+
+Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
+And request {name: 'Hulk', secretIdentity: 'Doctor Banner'}
+When method put
+Then status 200
+And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
+
+Scenario: update avenger with required data
+
+Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
+And request {name: 'Captain America'}
+When method put
+Then status 400
