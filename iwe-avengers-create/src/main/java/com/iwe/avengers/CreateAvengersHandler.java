@@ -4,13 +4,22 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.iwe.avenger.dynamodb.entity.Avenger;
 import com.iwe.avenger.lambda.response.HandlerResponse;
+import com.iwe.avengers.dao.AvengerDAO;
 
 public class CreateAvengersHandler implements RequestHandler<Avenger, HandlerResponse> {
 
+	private AvengerDAO dao = new AvengerDAO();
+
 	@Override
-	public HandlerResponse handleRequest(final Avenger newAvenger, final Context context) {
+	public HandlerResponse handleRequest(final Avenger avenger, final Context context) {
 
-		return null;
+		Avenger createAvenger = null;
 
-	}
-}
+		context.getLogger().log("[#] -  Creating Avenger...");
+		createAvenger = dao.create(avenger);
+		context.getLogger().log("[#] -  Avenger create succesfully.");
+
+	final HandlerResponse response = HandlerResponse.builder().setObjectBody(createAvenger).build();
+
+	return response;
+}}

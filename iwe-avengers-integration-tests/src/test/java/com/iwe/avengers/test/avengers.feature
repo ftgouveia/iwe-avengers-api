@@ -10,6 +10,12 @@ When method get
 Then status 200
 And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
 
+Scenario: Avenger not found
+
+Given path 'avengers', 'avenger-not-found'
+When method get
+Then status 404
+
 Scenario: Create a new avenger
 
 Given path 'avengers'
@@ -31,6 +37,12 @@ Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
 When method delete
 Then status 204
 
+Scenario: Delete avenger not found
+
+Given path 'avengers', 'avenger-not-found'
+When method delete
+Then status 404
+
 Scenario: update avenger by id
 
 Given path 'avengers', 'aaaa-bbbb-cccc-dddd'
@@ -38,6 +50,13 @@ And request {name: 'Hulk', secretIdentity: 'Doctor Banner'}
 When method put
 Then status 200
 And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
+
+Scenario: update avenger not found
+
+Given path 'avengers', 'avenger-not-found'
+And request {name: 'Hulk', secretIdentity: 'Doctor Banner'}
+When method put
+Then status 404
 
 Scenario: update avenger with required data
 
