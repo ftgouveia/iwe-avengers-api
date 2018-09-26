@@ -22,7 +22,7 @@ public class UpdateAvengersHandler implements RequestHandler<Avenger, HandlerRes
 			throw new AvengerNotFoundException("[NotFound] - Avenger id: " + avenger.getId());
 		}
 		context.getLogger().log("[#] -  Avenger found, updating...");
-		updateAvenger = dao.update(avenger);
+		updateAvenger = dao.merge(avenger);
 		context.getLogger().log("[#] -  Avenger succesfully updated.");
 		
 		final HandlerResponse response = HandlerResponse.builder().setObjectBody(updateAvenger).build();

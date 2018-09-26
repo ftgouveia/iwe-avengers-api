@@ -16,7 +16,7 @@ public class CreateAvengersHandler implements RequestHandler<Avenger, HandlerRes
 		Avenger createAvenger = null;
 
 		context.getLogger().log("[#] -  Creating Avenger...");
-		createAvenger = dao.create(avenger);
+		createAvenger = dao.merge(avenger);
 		context.getLogger().log("[#] -  Avenger create succesfully.");
 
 	final HandlerResponse response = HandlerResponse.builder().setObjectBody(createAvenger).build();
