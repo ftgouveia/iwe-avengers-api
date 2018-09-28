@@ -3,9 +3,26 @@ Feature: Perform integrated tests on the Avengers registration API
 Background:
 * url 'https://xrkcf7lxc1.execute-api.us-east-1.amazonaws.com/dev/'
 
+ * def getToken =
+"""
+function() {
+ var TokenGenerator = Java.type('com.iwe.avengers.test.authorization.TokenGenerator');
+ var sg = new TokenGenerator();
+ return sg.getToken();
+}
+"""
+* def token = call getToken
+
+Scenario: Should return non-authenticated access
+
+Given path 'avengers', 'any-id'
+When method get
+Then status 401
+
 Scenario: Avenger not found
 
 Given path 'avengers', 'avenger-not-found'
+And header Authorization = 'Bearer ' + token
 When method get
 Then status 404
 
@@ -20,6 +37,7 @@ And match response == {id: '#string', name: '#string', secretIdentity: '#string'
 * def savedAvenger = response
 
 Given path 'avengers', savedAvenger.id
+And header Authorization = 'Bearer ' + token
 When method get
 Then status 200
 And match $ == savedAvenger
@@ -42,6 +60,7 @@ And match response == {id: '#string', name: '#string', secretIdentity: '#string'
 * def savedAvenger = response
 
 Given path 'avengers', savedAvenger.id
+And header Authorization = 'Bearer ' + token
 When method get
 Then status 200
 And match $ == savedAvenger
@@ -52,8 +71,21 @@ Then status 204
 
 Scenario: Delete avenger not found
 
-Given path 'avengers', 'avenger-not-found'
+Given path 'avengers'
+And request {name: 'Captain America', secretIdentity: 'Steve Rogers'}
+When method post
+Then status 201
+And match response == {id: '#string', name: '#string', secretIdentity: '#string'}
+
+* def savedAvenger = response
+
+Given path 'avengers', savedAvenger.id
 When method delete
+Then status 204
+
+Given path 'avengers', savedAvenger.id
+And header Authorization = 'Bearer ' + token
+When method get
 Then status 404
 
 Scenario: update avenger by id
@@ -67,6 +99,7 @@ And match response == {id: '#string', name: '#string', secretIdentity: '#string'
 * def savedAvenger = response
 
 Given path 'avengers', savedAvenger.id
+And header Authorization = 'Bearer ' + token
 When method get
 Then status 200
 And match $ == savedAvenger
